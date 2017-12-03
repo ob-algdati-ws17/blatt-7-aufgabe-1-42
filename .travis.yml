@@ -9,3 +9,7 @@ before_script:
     - cmake ..
 
 script: make
+
+after_success:
+    - cd build
+    - make test 
