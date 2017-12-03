@@ -5,10 +5,9 @@ if (APPLE)
     add_definitions(-D__GLIBCXX__)
 endif (APPLE)
 
-add_library(testAvlTree ${SRCS})
+add_library(testAvlTree ${SRCS} ../avltree/library.h)
 
 target_link_libraries(testAvlTree
-        avlTree
         gtest
         gmock
 )
