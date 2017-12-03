@@ -3,7 +3,7 @@
 
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
-#include "avltree/libary.h"
+#include "avltree/library.h"
 
 class AvlTreeTest : public ::testing::Test {
 };
