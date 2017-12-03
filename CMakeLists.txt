@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.3)
 project(blatt_7_aufgabe_1_42)
 
 set(CMAKE_CXX_STANDARD 11)
