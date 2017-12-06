@@ -32,20 +32,19 @@ TEST(AvlTreeTest, Search_Exists) {
 
 }
 
-TEST(AvlTreeTest, Insert_RotateForce){
+TEST(AvlTreeTest, Insert_LeftRotateForce){
     AvlTree tree;
-    tree.insert(1);
-    tree.insert(2);
-    tree.insert(3);
+    for (int i = 1; i <= 20; i++) {
+        tree.insert(i);
+    }
     cout << tree;
-    tree.insert(4);
-    cout << tree;
-    tree.insert(5);
-    cout << tree;
-    tree.insert(6);
-    cout << tree;
-    tree.insert(7);
-    cout << tree;
-    tree.insert(8);
+}
+
+
+TEST(AvlTreeTest, Insert_RightRotateForce){
+    AvlTree tree;
+    for (int i = 20; i > 0; i--) {
+        tree.insert(i);
+    }
     cout << tree;
 }

@@ -132,9 +132,9 @@ void AvlTree::upin(AvlTree::Node *input) {
             } else if (previous->balance == 1 && input->balance == -1) {
                 rotateRightLeft(previous);
             } else if (previous->balance == -1) {
-                previous->balance == 0;
+                previous->balance = 0;
             } else if (previous->balance == 0) {
-                previous->balance == 1;
+                previous->balance = 1;
                 upin(previous);
             }
             return;
@@ -205,8 +205,8 @@ AvlTree::Node *AvlTree::rotateLeft(AvlTree::Node *input) {
     input->right = inputRightLeft;
     if (inputRightLeft)
         inputRightLeft->previous = input;
-    inputRight->calcBalance();
     input->calcBalance();
+    inputRight->calcBalance();
     if (inputPrevious)
         inputPrevious->calcBalance();
     return inputRight;
@@ -235,8 +235,8 @@ AvlTree::Node *AvlTree::rotateRight(AvlTree::Node *input) {
     input->left = inputLeftRight;
     if (inputLeftRight)
         inputLeftRight->previous = input;
-    inputLeft->calcBalance();
     input->calcBalance();
+    inputLeft->calcBalance();
     if(inputPrevious)
         inputPrevious->calcBalance();
     return inputLeft;
