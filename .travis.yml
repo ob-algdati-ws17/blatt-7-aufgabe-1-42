@@ -11,5 +11,4 @@ before_script:
 script: make
 
 after_success:
-    - cd build
-    - make test 
+    - .\testAvlTree 
