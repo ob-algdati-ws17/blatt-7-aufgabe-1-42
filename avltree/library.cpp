@@ -11,11 +11,18 @@ AvlTree::Node::Node(int const val, Node *left, Node *right) : key(val), left(lef
 }
 
 AvlTree::Node::~Node() {
-
+    if (left != nullptr) {
+        delete(left);
+    }
+    if (right != nullptr) {
+        delete(right);
+    }
 }
 
 AvlTree::~AvlTree() {
-
+    if (root != nullptr) {
+        delete root;
+    }
 }
 
 bool AvlTree::search(int const key) const {
@@ -72,3 +79,29 @@ bool AvlTree::insert(int const key) {
 
     return true;
 }
+
+AvlTree::Node* AvlTree::rotateLeft(AvlTree::Node* input) {
+    return input;
+};
+
+AvlTree::Node* AvlTree::rotateRight(AvlTree::Node* input) {
+    return input;
+};
+
+AvlTree::Node* AvlTree::rotateLeftRight(AvlTree::Node* input) {
+    return input;
+};
+
+AvlTree::Node* AvlTree::rotateRightLeft(AvlTree::Node* input) {
+    return input;
+};
+
+AvlTree &operator+=(AvlTree &tree, int const param) {
+    tree.insert(param);
+    return tree;
+};
+
+AvlTree &operator-=(AvlTree &tree, int const param) {
+    tree.remove(param);
+    return tree;
+};

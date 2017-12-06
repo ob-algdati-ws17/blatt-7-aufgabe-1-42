@@ -14,12 +14,21 @@ private:
         Node(int const, Node *, Node *);
 
         int key;
+        int balance;
         Node *left = nullptr;
         Node *right = nullptr;
         Node *previous = nullptr;
     };
 
     Node *root = nullptr;
+
+    Node* rotateLeft(Node*);
+
+    Node* rotateRight(Node*);
+
+    Node* rotateLeftRight(Node*);
+
+    Node* rotateRightLeft(Node*);
 
 public:
 
@@ -30,6 +39,10 @@ public:
     bool insert(int const);
 
     bool remove(int const);
+
+    friend AvlTree &operator+=(AvlTree, int const);
+
+    friend AvlTree &operator-=(AvlTree, int const);
 
 };
 
