@@ -31,3 +31,20 @@ TEST(AvlTreeTest, Search_Exists) {
     EXPECT_TRUE(tree.search(1));
 
 }
+
+TEST(AvlTreeTest, Insert_LeftRotateForce){
+    AvlTree tree;
+    for (int i = 1; i <= 20; i++) {
+        tree.insert(i);
+    }
+    cout << tree;
+}
+
+
+TEST(AvlTreeTest, Insert_RightRotateForce){
+    AvlTree tree;
+    for (int i = 20; i > 0; i--) {
+        tree.insert(i);
+    }
+    cout << tree;
+}
