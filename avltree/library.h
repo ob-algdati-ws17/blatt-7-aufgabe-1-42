@@ -1,6 +1,8 @@
 #ifndef BLATT_7_AUFGABE_1_42_LIBRARY_H
 #define BLATT_7_AUFGABE_1_42_LIBRARY_H
 
+#include <ostream>
+
 using namespace std;
 
 class AvlTree {
@@ -14,10 +16,11 @@ private:
         Node(int const, Node *, Node *);
 
         int key;
-        int balance;
+        int balance = 0;
         Node *left = nullptr;
         Node *right = nullptr;
         Node *previous = nullptr;
+        friend ostream operator<<(ostream, Node*);
     };
 
     Node *root = nullptr;
@@ -30,6 +33,8 @@ private:
 
     Node* rotateRightLeft(Node*);
 
+    void upin(Node*);
+
 public:
 
     ~AvlTree();
@@ -40,9 +45,11 @@ public:
 
     bool remove(int const);
 
-    friend AvlTree &operator+=(AvlTree, int const);
+    friend AvlTree &operator+=(AvlTree*, int const);
 
-    friend AvlTree &operator-=(AvlTree, int const);
+    friend AvlTree &operator-=(AvlTree*, int const);
+
+    friend ostream &operator<<(ostream, AvlTree);
 
 };
 

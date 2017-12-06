@@ -31,3 +31,10 @@ TEST(AvlTreeTest, Search_Exists) {
     EXPECT_TRUE(tree.search(1));
 
 }
+
+TEST(AvlTreeTest, Insert_RotateForce){
+    AvlTree tree;
+    tree.insert(1);
+    tree.insert(2);
+    tree.insert(3);
+}
