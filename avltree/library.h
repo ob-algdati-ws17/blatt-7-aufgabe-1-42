@@ -20,7 +20,7 @@ private:
         Node *left = nullptr;
         Node *right = nullptr;
         Node *previous = nullptr;
-        friend ostream operator<<(ostream, Node*);
+        void calcBalance();
     };
 
     Node *root = nullptr;
@@ -35,6 +35,8 @@ private:
 
     void upin(Node*);
 
+    void display(Node*, int);
+
 public:
 
     ~AvlTree();
@@ -45,11 +47,13 @@ public:
 
     bool remove(int const);
 
-    friend AvlTree &operator+=(AvlTree*, int const);
+    friend AvlTree &operator+=(AvlTree &, int const);
 
-    friend AvlTree &operator-=(AvlTree*, int const);
+    friend AvlTree &operator-=(AvlTree &, int const);
 
-    friend ostream &operator<<(ostream, AvlTree);
+    friend ostream &operator<<(ostream &, AvlTree &);
+
+    void display();
 
 };
 
