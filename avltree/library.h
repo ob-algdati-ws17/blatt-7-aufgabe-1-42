@@ -20,7 +20,6 @@ private:
         Node *left = nullptr;
         Node *right = nullptr;
         Node *previous = nullptr;
-        void calcBalance();
     };
 
     Node *root = nullptr;
@@ -36,6 +35,10 @@ private:
     void upin(Node*);
 
     void display(Node*, int);
+
+    int height(Node*);
+
+    bool isBalanced(Node*);
 
 public:
 
@@ -54,6 +57,9 @@ public:
     friend ostream &operator<<(ostream &, AvlTree &);
 
     void display();
+
+    bool isBalanced();
+
 
 };
 

@@ -34,17 +34,19 @@ TEST(AvlTreeTest, Search_Exists) {
 
 TEST(AvlTreeTest, Insert_LeftRotateForce){
     AvlTree tree;
-    for (int i = 1; i <= 20; i++) {
+    for (int i = 1; i <= 30; i++) {
         tree.insert(i);
     }
     cout << tree;
+    EXPECT_TRUE(tree.isBalanced());
 }
 
 
 TEST(AvlTreeTest, Insert_RightRotateForce){
     AvlTree tree;
-    for (int i = 20; i > 0; i--) {
+    for (int i = 30; i > 0; i--) {
         tree.insert(i);
     }
     cout << tree;
+    EXPECT_TRUE(tree.isBalanced());
 }

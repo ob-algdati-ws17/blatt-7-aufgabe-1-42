@@ -20,32 +20,6 @@ AvlTree::Node::~Node() {
     }
 }
 
-void AvlTree::Node::calcBalance() {
-    //Fehler !!
-    if (left == nullptr && right == nullptr) {
-        balance = 0;
-    } else if (left == nullptr) {
-        balance = right->balance + 1;
-    } else if (right == nullptr ){
-        balance = left->balance - 1;
-    } else {
-        balance = abs(right->balance) - abs(left->balance);
-    }
-}
-/*
-void AvlTree::Node::calcBalance() {
-    int leftBalance = -1;
-    int rightBalance = -1;
-    if (left) {
-        leftBalance = left->balance;
-    }
-    if (right) {
-        rightBalance = right->balance;
-    }
-    balance = rightBalance - leftBalance;
-}
-*/
-
 AvlTree::~AvlTree() {
     if (root != nullptr) {
         delete root;
@@ -142,47 +116,6 @@ void AvlTree::upin(AvlTree::Node *input) {
     }
 }
 
-/*
- * old
-void AvlTree::upin(AvlTree::Node *input) {
-    if (input != nullptr) {
-        int left = -1;
-        int right = -1;
-
-        int newBalance = 0;
-        if (input->left && !input->right) {
-            left = input->left->balance;
-            newBalance = left - 1;
-        } else if (input->right && !input->left) {
-            right = input->right->balance;
-            newBalance =  right +1;
-        } else{
-            left = input->left->balance;
-            right = input->right->balance;
-            newBalance = right - left;
-        }
-
-        if (newBalance == 0) {
-            input->balance = newBalance;
-            return;
-        } else if (abs(newBalance) == 1) {
-            input->balance = newBalance;
-            upin(input->previous);
-        } else {
-            if (input->balance == -1 && left == -1) {
-                rotateRight(input);
-            } else if (input->balance == -1 && left == 1) {
-                rotateLeftRight(input);
-            } else if (input->balance == 1 && right == 1) {
-                rotateLeft(input);
-            } else if (input->balance == 1 && right == -1) {
-                rotateRightLeft(input);
-            }
-            return;
-        }
-    }
-}
-*/
 //input old root get new root
 AvlTree::Node *AvlTree::rotateLeft(AvlTree::Node *input) {
     Node *inputRightLeft = input->right->left;
@@ -205,10 +138,10 @@ AvlTree::Node *AvlTree::rotateLeft(AvlTree::Node *input) {
     input->right = inputRightLeft;
     if (inputRightLeft)
         inputRightLeft->previous = input;
-    input->calcBalance();
-    inputRight->calcBalance();
-    if (inputPrevious)
-        inputPrevious->calcBalance();
+
+    input->balance = 0;
+    inputRight->balance = 0;
+
     return inputRight;
 };
 
@@ -235,24 +168,45 @@ AvlTree::Node *AvlTree::rotateRight(AvlTree::Node *input) {
     input->left = inputLeftRight;
     if (inputLeftRight)
         inputLeftRight->previous = input;
-    input->calcBalance();
-    inputLeft->calcBalance();
-    if(inputPrevious)
-        inputPrevious->calcBalance();
-    return inputLeft;
+
+    input->balance = 0;
+    inputLeft->balance = 0;
+     return inputLeft;
 };
 
 //input old root get new root
 AvlTree::Node *AvlTree::rotateLeftRight(AvlTree::Node *input) {
+    Node* tmp = input->left->right;
+    bool leftSmaller = true;
+    if (tmp->balance = -1) {
+        leftSmaller = false;
+    }
     rotateLeft(input->left);
-    return rotateRight(input);
+    Node* toReturn = rotateRight(input);
+    if (leftSmaller) {
+        toReturn->left->balance = -1;
+    } else {
+        toReturn->right->balance = 1;
+    }
+    return toReturn;
 };
 
 //input old root get new root
 AvlTree::Node *AvlTree::rotateRightLeft(AvlTree::Node *input) {
+    Node* tmp = input->right->left;
+    bool leftSmaller = true;
+    if (tmp->balance = -1) {
+        leftSmaller = false;
+    }
     rotateRight(input->right);
-    return rotateLeft(input);
-}
+    Node* toReturn = rotateLeft(input);
+    if (leftSmaller) {
+        toReturn->left->balance = -1;
+    } else {
+        toReturn->right->balance = 1;
+    }
+    return toReturn;
+};
 
 ostream &operator<<(ostream &stream, AvlTree &tree) {
     tree.display();
@@ -266,11 +220,11 @@ void AvlTree::display() {
 
 void AvlTree::display(AvlTree::Node *current, int indent) {
     if (current != nullptr) {
-        display(current->right, indent + 4);
+        display(current->right, indent + 10);
         if (indent > 0)
             cout << setw(indent) << " ";
         cout << current->key << endl;
-        display(current->left, indent + 4);
+        display(current->left, indent + 10);
     }
 }
 
@@ -283,3 +237,35 @@ AvlTree &operator-=(AvlTree &tree, int const param) {
     tree.remove(param);
     return tree;
 };
+
+bool AvlTree::isBalanced() {
+    isBalanced(root);
+}
+
+/* Returns true if binary tree with root as root is height-balanced */
+bool AvlTree::isBalanced(AvlTree::Node *root)
+{
+    int lh;
+    int rh;
+
+    if(root == NULL)
+        return 1;
+
+    lh = height(root->left);
+    rh = height(root->right);
+
+    if( abs(lh-rh) <= 1 &&
+        isBalanced(root->left) &&
+        isBalanced(root->right))
+        return 1;
+
+    return 0;
+}
+
+int AvlTree::height(AvlTree::Node *node)
+{
+    if(node == NULL)
+        return 0;
+
+    return 1 + max(height(node->left), height(node->right));
+}
