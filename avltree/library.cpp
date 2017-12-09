@@ -71,6 +71,7 @@ bool AvlTree::remove(int const key) {
             return false;
         }
     }
+    Node *child = element->left ? element->left : element->right;
     //Maybe the rool shall be deleted.
     if (element->previous) {
         bool isLeft = element->previous->left == element;
@@ -82,7 +83,6 @@ bool AvlTree::remove(int const key) {
                 break;
             case 1:
                 //Only one child attach node to previous and delete.
-                Node *child = element->left ? element->left : element->right;
                 isLeft ? element->previous->left : element->previous->right = child;
                 //Otherwise we destroy the child by removing the node.
                 element->left ? element->left : element->right = nullptr;
@@ -100,13 +100,14 @@ bool AvlTree::remove(int const key) {
                 root = nullptr;
                 break;
             case 1:
-                Node *child = element->left ? element->left : element->right;
                 Node *tmpRoot = root;
                 root = child;
                 element->left ? element->left : element->right = nullptr;
                 child->previous = nullptr;
                 delete tmpRoot;
                 break;
+            case 2:
+                 break;
         }
     }
 
