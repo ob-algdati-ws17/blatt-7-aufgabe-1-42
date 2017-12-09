@@ -20,6 +20,14 @@ AvlTree::Node::~Node() {
     }
 }
 
+int AvlTree::Node::childs() const {
+    if (left == nullptr && right == nullptr)
+        return 0;
+    if (left == nullptr || right == nullptr)
+        return 1;
+    return 2;
+}
+
 AvlTree::~AvlTree() {
     if (root != nullptr) {
         delete root;
@@ -41,7 +49,66 @@ bool AvlTree::search(int const key) const {
 
 }
 
+/**
+ *
+ * @param key the key of the node to remove.
+ * @return
+ */
 bool AvlTree::remove(int const key) {
+
+    if (root == nullptr)
+        return false;
+    Node *element = root;
+    while (true) {
+        if (element->key == key) {
+            break;
+        }
+        if (key > element->key && element->right) {
+            element = element->right;
+        } else if (key < element->key && element->left) {
+            element = element->left;
+        } else {
+            return false;
+        }
+    }
+    //Maybe the rool shall be deleted.
+    if (element->previous) {
+        bool isLeft = element->previous->left == element;
+        switch (element->childs()) {
+            case 0:
+                //No childs delete node and go upwords to root.
+                isLeft ? element->previous->left : element->previous->right = nullptr;
+                delete element;
+                break;
+            case 1:
+                //Only one child attach node to previous and delete.
+                Node *child = element->left ? element->left : element->right;
+                isLeft ? element->previous->left : element->previous->right = child;
+                //Otherwise we destroy the child by removing the node.
+                element->left ? element->left : element->right = nullptr;
+                child->previous = element->previous;
+                delete element;
+                break;
+            case 2:
+                break;
+        }
+    } else {
+        //Root node shal be deleted!
+        switch (element->childs()) {
+            case 0:
+                delete root;
+                root = nullptr;
+                break;
+            case 1:
+                Node *child = element->left ? element->left : element->right;
+                Node *tmpRoot = root;
+                root = child;
+                element->left ? element->left : element->right = nullptr;
+                child->previous = nullptr;
+                delete tmpRoot;
+                break;
+        }
+    }
 
 }
 
@@ -171,18 +238,18 @@ AvlTree::Node *AvlTree::rotateRight(AvlTree::Node *input) {
 
     input->balance = 0;
     inputLeft->balance = 0;
-     return inputLeft;
+    return inputLeft;
 };
 
 //input old root get new root
 AvlTree::Node *AvlTree::rotateLeftRight(AvlTree::Node *input) {
-    Node* tmp = input->left->right;
+    Node *tmp = input->left->right;
     bool leftSmaller = true;
     if (tmp->balance = -1) {
         leftSmaller = false;
     }
     rotateLeft(input->left);
-    Node* toReturn = rotateRight(input);
+    Node *toReturn = rotateRight(input);
     if (leftSmaller) {
         toReturn->left->balance = -1;
     } else {
@@ -193,13 +260,13 @@ AvlTree::Node *AvlTree::rotateLeftRight(AvlTree::Node *input) {
 
 //input old root get new root
 AvlTree::Node *AvlTree::rotateRightLeft(AvlTree::Node *input) {
-    Node* tmp = input->right->left;
+    Node *tmp = input->right->left;
     bool leftSmaller = true;
     if (tmp->balance = -1) {
         leftSmaller = false;
     }
     rotateRight(input->right);
-    Node* toReturn = rotateLeft(input);
+    Node *toReturn = rotateLeft(input);
     if (leftSmaller) {
         toReturn->left->balance = -1;
     } else {
@@ -243,18 +310,17 @@ bool AvlTree::isBalanced() {
 }
 
 /* Returns true if binary tree with root as root is height-balanced */
-bool AvlTree::isBalanced(AvlTree::Node *root)
-{
+bool AvlTree::isBalanced(AvlTree::Node *root) {
     int lh;
     int rh;
 
-    if(root == NULL)
+    if (root == NULL)
         return 1;
 
     lh = height(root->left);
     rh = height(root->right);
 
-    if( abs(lh-rh) <= 1 &&
+    if (abs(lh - rh) <= 1 &&
         isBalanced(root->left) &&
         isBalanced(root->right))
         return 1;
@@ -262,9 +328,8 @@ bool AvlTree::isBalanced(AvlTree::Node *root)
     return 0;
 }
 
-int AvlTree::height(AvlTree::Node *node)
-{
-    if(node == NULL)
+int AvlTree::height(AvlTree::Node *node) {
+    if (node == NULL)
         return 0;
 
     return 1 + max(height(node->left), height(node->right));

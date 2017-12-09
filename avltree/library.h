@@ -14,12 +14,13 @@ private:
         Node(int const);
 
         Node(int const, Node *, Node *);
-
+        int childs() const;
         int key;
         int balance = 0;
         Node *left = nullptr;
         Node *right = nullptr;
         Node *previous = nullptr;
+
     };
 
     Node *root = nullptr;
@@ -33,6 +34,8 @@ private:
     Node* rotateRightLeft(Node*);
 
     void upin(Node*);
+
+    void upout(Node*);
 
     void display(Node*, int);
 
