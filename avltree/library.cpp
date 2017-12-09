@@ -81,13 +81,14 @@ bool AvlTree::remove(int const key) {
                 isLeft ? element->previous->left : element->previous->right = nullptr;
                 delete element;
                 break;
-            case 1:
+            case 1: {
                 //Only one child attach node to previous and delete.
                 isLeft ? element->previous->left : element->previous->right = child;
                 //Otherwise we destroy the child by removing the node.
                 element->left ? element->left : element->right = nullptr;
                 child->previous = element->previous;
                 delete element;
+            }
                 break;
             case 2:
                 break;
@@ -99,15 +100,16 @@ bool AvlTree::remove(int const key) {
                 delete root;
                 root = nullptr;
                 break;
-            case 1:
+            case 1: {
                 Node *tmpRoot = root;
                 root = child;
                 element->left ? element->left : element->right = nullptr;
                 child->previous = nullptr;
                 delete tmpRoot;
+            }
                 break;
             case 2:
-                 break;
+                break;
         }
     }
 
