@@ -50,3 +50,36 @@ TEST(AvlTreeTest, Insert_RightRotateForce){
     cout << tree;
     EXPECT_TRUE(tree.isBalanced());
 }
+
+TEST(AvlTreeTest, Remove_Root){
+    AvlTree tree;
+    for (int i = 30; i > 0; i--) {
+        tree.insert(i);
+    }
+    cout << tree;
+    tree.remove(15);
+    cout << tree;
+    EXPECT_TRUE(tree.isBalanced());
+}
+
+TEST(AvlTreeTest, Remove_Node_2Childs){
+    AvlTree tree;
+    for (int i = 30; i > 0; i--) {
+        tree.insert(i);
+    }
+    cout << tree;
+    tree.remove(11);
+    cout << tree;
+    EXPECT_TRUE(tree.isBalanced());
+}
+
+TEST(AvlTreeTest, Remove_Node_1Childs){
+    AvlTree tree;
+    for (int i = 29; i > 0; i--) {
+        tree.insert(i);
+    }
+    cout << tree;
+    tree.remove(5);
+    cout << tree;
+    EXPECT_TRUE(tree.isBalanced());
+}

@@ -71,49 +71,96 @@ bool AvlTree::remove(int const key) {
             return false;
         }
     }
-    Node *child = element->left ? element->left : element->right;
     //Maybe the rool shall be deleted.
-    if (element->previous) {
-        bool isLeft = element->previous->left == element;
-        switch (element->childs()) {
-            case 0:
+    switch (element->childs()) {
+        case 0:
+            if (element->previous) {
                 //No childs delete node and go upwords to root.
-                isLeft ? element->previous->left : element->previous->right = nullptr;
-                delete element;
-                break;
-            case 1: {
-                //Only one child attach node to previous and delete.
-                isLeft ? element->previous->left : element->previous->right = child;
-                //Otherwise we destroy the child by removing the node.
-                element->left ? element->left : element->right = nullptr;
-                child->previous = element->previous;
-                delete element;
-            }
-                break;
-            case 2:
-                break;
-        }
-    } else {
-        //Root node shal be deleted!
-        switch (element->childs()) {
-            case 0:
-                delete root;
+                bool isLeft = element->previous->left == element;
+                if (isLeft) {
+                    element->previous->left = nullptr;
+                    if (element->previous->right == nullptr) {
+                        //hight of q 0
+                        element->previous->balance = 0;
+                        upout(element->previous);
+                    } else {
+                        if (element->previous->right->childs() == 0) {
+                            //hight of q 1
+                            element->previous->balance = 1;
+                        } else {
+                            //hight of q 2
+                            //eventuell upin auf element->previous->right ?
+                            upout(rotateLeft(element->previous));
+                        }
+                    }
+
+                } else {
+                    element->previous->right = nullptr;
+                    if (element->previous->left == nullptr) {
+                        //hight of q 0
+                        element->previous->balance = 0;
+                        upout(element->previous);
+                    } else {
+                        if (element->previous->left->childs() == 0) {
+                            //hight of q 1
+                            element->previous->balance = -1;
+                        } else {
+                            //hight of q 2
+                            //eventuell upin auf element->previous->left ?
+                            upout(rotateRight(element->previous));
+                        }
+                    }
+
+                }
+
+            } else {
                 root = nullptr;
-                break;
-            case 1: {
-                Node *tmpRoot = root;
-                root = child;
-                element->left ? element->left : element->right = nullptr;
-                child->previous = nullptr;
-                delete tmpRoot;
             }
-                break;
-            case 2:
-                break;
+            delete element;
+            break;
+        case 1: {
+            Node *child = element->left ? element->left : element->right;
+            element->key = child->key;
+            element->right = nullptr;
+            element->left = nullptr;
+            element->balance = 0;
+            if (element->previous) {
+                upout(element->previous);
+            }
+            delete child;
+            break;
+        }
+            break;
+        case 2: {
+            //go once left and then go right until end to get element fitting in spot of deleting element
+            Node *tmp = element->left;
+            bool isPreviousLeft = true;
+            while (tmp->right != nullptr) {
+                tmp = tmp->right;
+                isPreviousLeft = false;
+            }
+            if (isPreviousLeft) {
+                tmp->left ? tmp->previous->left = tmp->left : tmp->previous->left = nullptr;
+            } else {
+                tmp->left ? tmp->previous->right = tmp->left : tmp->previous->right = nullptr;
+            }
+            int tmpKey = element -> key;
+            element->key = tmp->key;
+            tmp->left = nullptr;
+            tmp->right = nullptr;
+            tmp->key = tmpKey;
+            //Achtung hier kein AVL-Baum! Erst nach remove
+            remove(tmpKey);
+            break;
         }
     }
 
 }
+
+void AvlTree::upout(AvlTree::Node *input) {
+    // TODO inplement !
+}
+
 
 bool AvlTree::insert(int const key) {
 
