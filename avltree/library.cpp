@@ -125,7 +125,7 @@ bool AvlTree::remove(int const key) {
             element->left = nullptr;
             element->balance = 0;
             if (element->previous) {
-                upout(element->previous);
+                upout(element);
             }
             delete child;
             break;
@@ -157,8 +157,43 @@ bool AvlTree::remove(int const key) {
 
 }
 
+//input root with input->balance = 0 and hight = hightBefore - 1
 void AvlTree::upout(AvlTree::Node *input) {
     // TODO inplement !
+    if (input->previous) {
+        if(input->previous->balance = -1) {
+            input->previous->balance = 0;
+            upout(input->previous);
+            return;
+        } else if (input->previous->balance = 0) {
+            input->previous->balance = 1;
+            return;
+        }
+        if(input = input->previous->left) {
+            if(input->balance = 0){
+                rotateLeft(input->previous);
+            } else if (input->balance = 1) {
+                rotateLeft(input->previous);
+                upout(input->previous);
+            } else {
+                upout(rotateRightLeft(input->previous));
+
+            }
+        } else {
+            if(input->balance = 0){
+                rotateRight(input->previous);
+            } else if (input->balance = 1) {
+                rotateRight(input->previous);
+                upout(input->previous);
+            } else {
+                upout(rotateLeftRight(input->previous));
+
+            }
+        }
+
+    }
+
+
 }
 
 

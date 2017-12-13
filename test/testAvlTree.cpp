@@ -83,3 +83,21 @@ TEST(AvlTreeTest, Remove_Node_1Childs){
     cout << tree;
     EXPECT_TRUE(tree.isBalanced());
 }
+
+TEST(AvlTreeTest, Remove_Multible){
+    AvlTree tree;
+    for (int i = 30; i > 0; i--) {
+        tree.insert(i);
+    }
+    cout << tree;
+    tree.remove(5);
+    tree.remove(2);
+    tree.remove(10);
+    tree.remove(12);
+    tree.remove(17);
+    tree.remove(21);
+    tree.remove(1);
+    tree.remove(26);
+    cout << tree;
+    EXPECT_TRUE(tree.isBalanced());
+}
