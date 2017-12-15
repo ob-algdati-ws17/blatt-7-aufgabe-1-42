@@ -43,6 +43,10 @@ private:
 
     bool isBalanced(Node*);
 
+    void deleteWithoutChild(Node*);
+
+    void deleteWithOneChild(Node*);
+
 public:
 
     ~AvlTree();

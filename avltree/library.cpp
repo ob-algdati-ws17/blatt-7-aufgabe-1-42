@@ -74,87 +74,100 @@ bool AvlTree::remove(int const key) {
     //Maybe the rool shall be deleted.
     switch (element->childs()) {
         case 0:
-            if (element->previous) {
-                //No childs delete node and go upwords to root.
-                bool isLeft = element->previous->left == element;
-                if (isLeft) {
-                    element->previous->left = nullptr;
-                    if (element->previous->right == nullptr) {
-                        //hight of q 0
-                        element->previous->balance = 0;
-                        upout(element->previous);
-                    } else {
-                        if (element->previous->right->childs() == 0) {
-                            //hight of q 1
-                            element->previous->balance = 1;
-                        } else {
-                            //hight of q 2
-                            //eventuell upin auf element->previous->right ?
-                            upout(rotateLeft(element->previous));
-                        }
-                    }
-
-                } else {
-                    element->previous->right = nullptr;
-                    if (element->previous->left == nullptr) {
-                        //hight of q 0
-                        element->previous->balance = 0;
-                        upout(element->previous);
-                    } else {
-                        if (element->previous->left->childs() == 0) {
-                            //hight of q 1
-                            element->previous->balance = -1;
-                        } else {
-                            //hight of q 2
-                            //eventuell upin auf element->previous->left ?
-                            upout(rotateRight(element->previous));
-                        }
-                    }
-
-                }
-
-            } else {
-                root = nullptr;
-            }
-            delete element;
+            deleteWithoutChild(element);
             break;
         case 1: {
-            Node *child = element->left ? element->left : element->right;
-            element->key = child->key;
-            element->right = nullptr;
-            element->left = nullptr;
-            element->balance = 0;
-            if (element->previous) {
-                upout(element);
-            }
-            delete child;
+            deleteWithOneChild(element);
             break;
         }
-            break;
         case 2: {
             //go once left and then go right until end to get element fitting in spot of deleting element
             Node *tmp = element->left;
-            bool isPreviousLeft = true;
             while (tmp->right != nullptr) {
                 tmp = tmp->right;
-                isPreviousLeft = false;
             }
-            if (isPreviousLeft) {
-                tmp->left ? tmp->previous->left = tmp->left : tmp->previous->left = nullptr;
-            } else {
-                tmp->left ? tmp->previous->right = tmp->left : tmp->previous->right = nullptr;
-            }
-            int tmpKey = element -> key;
+            int elemKey = element -> key;
             element->key = tmp->key;
-            tmp->left = nullptr;
-            tmp->right = nullptr;
-            tmp->key = tmpKey;
+            tmp->key = elemKey;
             //Achtung hier kein AVL-Baum! Erst nach remove
-            remove(tmpKey);
+            if (tmp->childs() == 0) {
+                deleteWithoutChild(tmp);
+            } else {
+                deleteWithOneChild(tmp);
+            }
             break;
         }
     }
 
+}
+
+void AvlTree::deleteWithoutChild(AvlTree::Node *element){
+    if (element->previous) {
+        //No childs delete node and go upwords to root.
+        bool isLeft = element->previous->left == element;
+        if (isLeft) {
+            element->previous->left = nullptr;
+            if (element->previous->right == nullptr) {
+                //hight of q 0
+                element->previous->balance = 0;
+                upout(element->previous);
+            } else {
+                if (element->previous->right->childs() == 0) {
+                    //hight of q 1
+                    element->previous->balance = 1;
+                } else {
+                    //hight of q 2
+                    Node *rotatedRoot = nullptr;
+                    if(element->balance = 1) {
+                        rotatedRoot = rotateLeft(element->previous);
+                    } else {
+                        rotatedRoot = rotateRightLeft(element->previous);
+                    }
+                    upout(rotatedRoot);
+                }
+            }
+
+        } else {
+            element->previous->right = nullptr;
+            if (element->previous->left == nullptr) {
+                //hight of q 0
+                element->previous->balance = 0;
+                upout(element->previous);
+            } else {
+                if (element->previous->left->childs() == 0) {
+                    //hight of q 1
+                    element->previous->balance = -1;
+                } else {
+                    //hight of q 2
+                    Node *rotatedRoot = nullptr;
+                    if(element->balance = -1) {
+                        rotatedRoot = rotateRight(element->previous);
+                    } else {
+                        rotatedRoot = rotateLeftRight(element->previous);
+                    }
+                    upout(rotatedRoot);
+                }
+            }
+
+        }
+
+    } else {
+        root = nullptr;
+    }
+    delete element;
+}
+
+
+void AvlTree::deleteWithOneChild(AvlTree::Node *element) {
+    Node *child = element->left ? element->left : element->right;
+    element->key = child->key;
+    element->right = nullptr;
+    element->left = nullptr;
+    element->balance = 0;
+    if (element->previous) {
+        upout(element);
+    }
+    delete child;
 }
 
 //input root with input->balance = 0 and hight = hightBefore - 1
