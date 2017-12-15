@@ -84,27 +84,27 @@ TEST(AvlTreeTest, Remove_Node_1Childs){
     EXPECT_TRUE(tree.isBalanced());
 }
 
-
+//fail in travis: 13,1,5,13,2 --> fixed
 TEST(AvlTreeTest, isFailing){
     AvlTree tree;
-    for (int i = 16; i > 0; i--) {
+    for (int i = 13; i > 0; i--) {
         tree.insert(i);
     }
 
     cout<<tree;
+    tree.remove(1);
+    cout<<tree;
+    ASSERT_TRUE(tree.isBalanced());
+
     tree.remove(5);
     cout<<tree;
     ASSERT_TRUE(tree.isBalanced());
 
-    tree.remove(16);
+    tree.remove(13);
     cout<<tree;
     ASSERT_TRUE(tree.isBalanced());
 
-    tree.remove(6);
-    cout<<tree;
-    ASSERT_TRUE(tree.isBalanced());
-
-    tree.remove(9);
+    tree.remove(2);
     cout<<tree;
     ASSERT_TRUE(tree.isBalanced());
 }
@@ -138,6 +138,7 @@ TEST(AvlTreeTest, Remove_Multible) {
 
         cout << tree.isBalanced() << ",";
         cout << tree;
-        ASSERT_TRUE(tree.isBalanced());
+        EXPECT_TRUE(tree.isBalanced());
     };
 }
+

@@ -103,7 +103,6 @@ bool AvlTree::remove(int const key) {
 
 void AvlTree::deleteWithoutChild(AvlTree::Node *element){
     if (element->previous) {
-        //No childs delete node and go upwords to root.
         bool isLeft = element->previous->left == element;
         if (isLeft) {
             element->previous->left = nullptr;
@@ -118,7 +117,7 @@ void AvlTree::deleteWithoutChild(AvlTree::Node *element){
                 } else {
                     //hight of q 2
                     Node *rotatedRoot = nullptr;
-                    if(element->balance = 1) {
+                    if(element->previous->right->balance == 1) {
                         rotatedRoot = rotateLeft(element->previous);
                     } else {
                         rotatedRoot = rotateRightLeft(element->previous);
@@ -140,7 +139,7 @@ void AvlTree::deleteWithoutChild(AvlTree::Node *element){
                 } else {
                     //hight of q 2
                     Node *rotatedRoot = nullptr;
-                    if(element->balance = -1) {
+                    if (element->previous->left->balance == -1) {
                         rotatedRoot = rotateRight(element->previous);
                     } else {
                         rotatedRoot = rotateLeftRight(element->previous);
@@ -301,9 +300,9 @@ AvlTree::Node *AvlTree::rotateLeft(AvlTree::Node *input) {
     inputRight->left = input;
     input->previous = inputRight;
     input->right = inputRightLeft;
-    if (inputRightLeft)
+    if (inputRightLeft) {
         inputRightLeft->previous = input;
-
+    }
     input->balance = 0;
     inputRight->balance = 0;
 
@@ -331,9 +330,9 @@ AvlTree::Node *AvlTree::rotateRight(AvlTree::Node *input) {
     inputLeft->right = input;
     input->previous = inputLeft;
     input->left = inputLeftRight;
-    if (inputLeftRight)
+    if (inputLeftRight) {
         inputLeftRight->previous = input;
-
+    }
     input->balance = 0;
     inputLeft->balance = 0;
     return inputLeft;
