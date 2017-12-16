@@ -162,16 +162,11 @@ TEST(AvlTreeTest, Remove_Multible) {
             tree.insert(j);
         }
         cout << "Tree with " << i << " Nodes" << endl;
-        bool test = false;
-        srand(time(nullptr));
         for (int k = i/2; k>0; k--){
+            srand(time(nullptr));
             random_integer = rand()%i + 1;
             tree.remove(random_integer);
-
         }
-
-        //cout << "Balanced ? : " << tree.isBalanced() << endl;
-        //cout << tree;
         EXPECT_TRUE(tree.isBalanced());
     };
 }

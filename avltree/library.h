@@ -7,7 +7,9 @@ using namespace std;
 
 class AvlTree {
 private:
-
+    enum Child{
+        left, right
+    };
     struct Node {
         ~Node();
 
@@ -15,11 +17,13 @@ private:
 
         Node(int const, Node *, Node *);
         int childs() const;
+        Node *getChild(Child) const;
         int key;
         int balance = 0;
         Node *left = nullptr;
         Node *right = nullptr;
         Node *previous = nullptr;
+
 
     };
 
@@ -47,6 +51,10 @@ private:
 
     void deleteWithOneChild(Node*);
 
+    void fixBalancesDelete(Node*);
+
+    void fixBalancesChild(const Node*, Child) const;
+
 public:
 
     ~AvlTree();
@@ -66,7 +74,6 @@ public:
     void display();
 
     bool isBalanced();
-
 
 };
 

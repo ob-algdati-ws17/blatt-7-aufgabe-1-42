@@ -28,6 +28,12 @@ int AvlTree::Node::childs() const {
     return 2;
 }
 
+AvlTree::Node *AvlTree::Node::getChild(Child child) const {
+    if (child == Child::left)
+        return this->left;
+    return this->right;
+}
+
 AvlTree::~AvlTree() {
     if (root != nullptr) {
         delete root;
@@ -84,7 +90,7 @@ bool AvlTree::remove(int const key) {
             while (tmp->right != nullptr) {
                 tmp = tmp->right;
             }
-            int elemKey = element -> key;
+            int elemKey = element->key;
             element->key = tmp->key;
             tmp->key = elemKey;
             //Achtung hier kein AVL-Baum! Erst nach remove
@@ -99,7 +105,7 @@ bool AvlTree::remove(int const key) {
 
 }
 
-void AvlTree::deleteWithoutChild(AvlTree::Node *element){
+void AvlTree::deleteWithoutChild(AvlTree::Node *element) {
     if (element->previous) {
         bool isLeft = element->previous->left == element;
         if (isLeft) {
@@ -115,40 +121,12 @@ void AvlTree::deleteWithoutChild(AvlTree::Node *element){
                 } else {
                     //hight of q 2
                     Node *rotatedRoot = nullptr;
-                    if(element->previous->right->balance == 1) {
+                    if (element->previous->right->balance == 1) {
                         rotatedRoot = rotateLeft(element->previous);
                     } else {
                         rotatedRoot = rotateRightLeft(element->previous);
                     }
-
-                    //calc balance of right
-                    if (rotatedRoot->right->right && rotatedRoot->right->left ) {
-                        rotatedRoot->right->balance = 0;
-                    } else if ( rotatedRoot->right->right ) {
-                        rotatedRoot->right->balance = 1;
-                    } else if (rotatedRoot->right->left) {
-                        rotatedRoot->right->balance = -1;
-                    } else {
-                        rotatedRoot->right->balance = 0;
-                    }
-                    //calc balance of left
-                    if (rotatedRoot->left->right && rotatedRoot->left->left ) {
-                        rotatedRoot->left->balance = 0;
-                    } else if ( rotatedRoot->left->right ) {
-                        rotatedRoot->left->balance = 1;
-                    } else if (rotatedRoot->left->left) {
-                        rotatedRoot->left->balance = -1;
-                    } else {
-                        rotatedRoot->left->balance = 0;
-                    }
-                    //calc balance of root
-                    if (rotatedRoot->left->childs() > 0 && rotatedRoot->right->childs() == 0) {
-                        rotatedRoot->balance = -1;
-                    } else if (rotatedRoot->left->childs() == 0 && rotatedRoot->right->childs() > 0) {
-                        rotatedRoot->balance = 1;
-                    } else {
-                        upout(rotatedRoot);
-                    }
+                    fixBalancesDelete(rotatedRoot);
                 }
             }
 
@@ -170,34 +148,7 @@ void AvlTree::deleteWithoutChild(AvlTree::Node *element){
                     } else {
                         rotatedRoot = rotateLeftRight(element->previous);
                     }
-                    //calc balance of right
-                    if (rotatedRoot->right->right && rotatedRoot->right->left ) {
-                        rotatedRoot->right->balance = 0;
-                    } else if ( rotatedRoot->right->right ) {
-                        rotatedRoot->right->balance = 1;
-                    } else if (rotatedRoot->right->left) {
-                        rotatedRoot->right->balance = -1;
-                    } else {
-                        rotatedRoot->right->balance = 0;
-                    }
-                    //calc balance of left
-                    if (rotatedRoot->left->right && rotatedRoot->left->left ) {
-                        rotatedRoot->left->balance = 0;
-                    } else if ( rotatedRoot->left->right ) {
-                        rotatedRoot->left->balance = 1;
-                    } else if (rotatedRoot->left->left) {
-                        rotatedRoot->left->balance = -1;
-                    } else {
-                        rotatedRoot->left->balance = 0;
-                    }
-                    //calc balance of root
-                    if (rotatedRoot->left->childs() > 0 && rotatedRoot->right->childs() == 0) {
-                        rotatedRoot->balance = -1;
-                    } else if (rotatedRoot->left->childs() == 0 && rotatedRoot->right->childs() > 0) {
-                        rotatedRoot->balance = 1;
-                    } else {
-                        upout(rotatedRoot);
-                    }
+                    fixBalancesDelete(rotatedRoot);
                 }
             }
 
@@ -207,6 +158,33 @@ void AvlTree::deleteWithoutChild(AvlTree::Node *element){
         root = nullptr;
     }
     delete element;
+}
+
+void AvlTree::fixBalancesDelete(AvlTree::Node *rotatedRoot) {//calc balance of right
+    //calc balance of left child
+    fixBalancesChild(rotatedRoot, Child::left);
+    //Fix balances of the right child
+    fixBalancesChild(rotatedRoot, Child::right);
+    //calc balance of root
+    if (rotatedRoot->left->childs() > 0 && rotatedRoot->right->childs() == 0) {
+        rotatedRoot->balance = -1;
+    } else if (rotatedRoot->left->childs() == 0 && rotatedRoot->right->childs() > 0) {
+        rotatedRoot->balance = 1;
+    } else {
+        upout(rotatedRoot);
+    }
+}
+
+void AvlTree::fixBalancesChild(const AvlTree::Node *rotatedRoot, Child child) const {
+    if (rotatedRoot->getChild(child)->childs() == 2) {
+        rotatedRoot->getChild(child)->balance = 0;
+    } else if (rotatedRoot->getChild(child)->right) {
+        rotatedRoot->getChild(child)->balance = 1;
+    } else if (rotatedRoot->getChild(child)->left) {
+        rotatedRoot->getChild(child)->balance = -1;
+    } else {
+        rotatedRoot->getChild(child)->balance = 0;
+    }
 }
 
 
@@ -225,8 +203,8 @@ void AvlTree::deleteWithOneChild(AvlTree::Node *element) {
 //input root with input->balance = 0 and hight = hightBefore - 1
 void AvlTree::upout(AvlTree::Node *input) {
     if (input->previous) {
-        if(input == input->previous->left) {
-            if(input->previous->balance == -1) {
+        if (input == input->previous->left) {
+            if (input->previous->balance == -1) {
                 input->previous->balance = 0;
                 upout(input->previous);
                 return;
@@ -234,7 +212,7 @@ void AvlTree::upout(AvlTree::Node *input) {
                 input->previous->balance = 1;
                 return;
             } else {
-                if(input->previous->right->balance == 0){
+                if (input->previous->right->balance == 0) {
                     Node *root = rotateLeft(input->previous);
                     root->balance = -1;
                     root->left->balance = 1;
@@ -252,7 +230,7 @@ void AvlTree::upout(AvlTree::Node *input) {
                     root->left->left->balance = 0;
                     root->left->balance = 0;
                     root->right->balance = 0;
-                    if(balanceRightLeft == 1) {
+                    if (balanceRightLeft == 1) {
                         root->left->balance = -1;
                     } else if (balanceRightLeft == -1) {
                         root->right->balance = 1;
@@ -261,7 +239,7 @@ void AvlTree::upout(AvlTree::Node *input) {
                 }
             }
         } else {
-            if(input->previous->balance == 1) {
+            if (input->previous->balance == 1) {
                 input->previous->balance = 0;
                 upout(input->previous);
                 return;
@@ -269,7 +247,7 @@ void AvlTree::upout(AvlTree::Node *input) {
                 input->previous->balance = -1;
                 return;
             } else {
-                if(input->previous->left->balance == 0){
+                if (input->previous->left->balance == 0) {
                     Node *root = rotateRight(input->previous);
                     root->balance = 1;
                     root->right->balance = -1;
@@ -285,9 +263,10 @@ void AvlTree::upout(AvlTree::Node *input) {
                     int balanceLeftRight = input->previous->left->right->balance;
                     Node *root = rotateLeftRight(input->previous);
                     root->balance = 0;
-                    root->right->right->balance = 0;root->left->balance = 0;
+                    root->right->right->balance = 0;
+                    root->left->balance = 0;
                     root->right->balance = 0;
-                    if(balanceLeftRight == 1) {
+                    if (balanceLeftRight == 1) {
                         root->left->balance = -1;
                     } else if (balanceLeftRight == -1) {
                         root->right->balance = 1;
