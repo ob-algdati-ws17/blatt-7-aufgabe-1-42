@@ -20,6 +20,8 @@ AvlTree::Node::~Node() {
     }
 }
 
+/// Counts the amount of childrens attached to this node.
+/// \return the amount of children {0,1,2}
 int AvlTree::Node::childs() const {
     if (left == nullptr && right == nullptr)
         return 0;
@@ -28,18 +30,25 @@ int AvlTree::Node::childs() const {
     return 2;
 }
 
+/// Gets the left or right child of the node.
+/// \param child the type of child should be fetched.
+/// \return the child node. (May be nullptr!)
 AvlTree::Node *AvlTree::Node::getChild(Child child) const {
     if (child == Child::left)
         return this->left;
     return this->right;
 }
 
+/// Deconstructs the avl tree
 AvlTree::~AvlTree() {
     if (root != nullptr) {
         delete root;
     }
 }
 
+/// Searches a node in the avl tree.
+/// \param key the key of the node to find.
+/// \return true if the node is found, otherwise false.
 bool AvlTree::search(int const key) const {
     Node *element = root;
 
@@ -55,9 +64,9 @@ bool AvlTree::search(int const key) const {
 
 }
 
-///
-/// \param key
-/// \return
+/// Removes a node from the tree.
+/// \param key the node to remove.
+/// \return true if the node was found and deleted, otherwise false.
 bool AvlTree::remove(int const key) {
 
     if (root == nullptr)
@@ -105,21 +114,23 @@ bool AvlTree::remove(int const key) {
 
 }
 
+/// Delete a given node without an child element (only two leaf)
+/// \param element the element to delete.
 void AvlTree::deleteWithoutChild(AvlTree::Node *element) {
     if (element->previous) {
         bool isLeft = element->previous->left == element;
         if (isLeft) {
             element->previous->left = nullptr;
             if (element->previous->right == nullptr) {
-                //hight of q 0
+                //height of q 0
                 element->previous->balance = 0;
                 upout(element->previous);
             } else {
                 if (element->previous->right->childs() == 0) {
-                    //hight of q 1
+                    //height of q 1
                     element->previous->balance = 1;
                 } else {
-                    //hight of q 2
+                    //height of q 2
                     Node *rotatedRoot = nullptr;
                     if (element->previous->right->balance == 1) {
                         rotatedRoot = rotateLeft(element->previous);
@@ -133,15 +144,15 @@ void AvlTree::deleteWithoutChild(AvlTree::Node *element) {
         } else {
             element->previous->right = nullptr;
             if (element->previous->left == nullptr) {
-                //hight of q 0
+                //height of q 0
                 element->previous->balance = 0;
                 upout(element->previous);
             } else {
                 if (element->previous->left->childs() == 0) {
-                    //hight of q 1
+                    //height of q 1
                     element->previous->balance = -1;
                 } else {
-                    //hight of q 2
+                    //height of q 2
                     Node *rotatedRoot = nullptr;
                     if (element->previous->left->balance == -1) {
                         rotatedRoot = rotateRight(element->previous);
@@ -160,6 +171,8 @@ void AvlTree::deleteWithoutChild(AvlTree::Node *element) {
     delete element;
 }
 
+/// Fixes the balances of the (new) parents after deleting a node without childs.
+/// \param rotatedRoot the new root of the "subtree"
 void AvlTree::fixBalancesDelete(AvlTree::Node *rotatedRoot) {//calc balance of right
     //calc balance of left child
     fixBalancesChild(rotatedRoot, Child::left);
@@ -175,6 +188,9 @@ void AvlTree::fixBalancesDelete(AvlTree::Node *rotatedRoot) {//calc balance of r
     }
 }
 
+/// Fixes the balances of a child node.
+/// \param rotatedRoot the root to fetch the child.
+/// \param child the child to fix (left or right)
 void AvlTree::fixBalancesChild(const AvlTree::Node *rotatedRoot, Child child) const {
     if (rotatedRoot->getChild(child)->childs() == 2) {
         rotatedRoot->getChild(child)->balance = 0;
@@ -187,7 +203,8 @@ void AvlTree::fixBalancesChild(const AvlTree::Node *rotatedRoot, Child child) co
     }
 }
 
-
+/// Delete an node with excatly one child.
+/// \param element the node to delete.
 void AvlTree::deleteWithOneChild(AvlTree::Node *element) {
     Node *child = element->left ? element->left : element->right;
     element->key = child->key;
@@ -200,7 +217,8 @@ void AvlTree::deleteWithOneChild(AvlTree::Node *element) {
     delete child;
 }
 
-//input root with input->balance = 0 and hight = hightBefore - 1
+/// The upout logic after removing a node.
+/// \param input the parent node of the removed node.
 void AvlTree::upout(AvlTree::Node *input) {
     if (input->previous) {
         if (input == input->previous->left) {
@@ -282,7 +300,9 @@ void AvlTree::upout(AvlTree::Node *input) {
 
 }
 
-
+/// Inserts a new key in the tree.
+/// \param key the key to insert.
+/// \return true if the key was inserted, false if not (mostly because it already exists)
 bool AvlTree::insert(int const key) {
 
     Node *toInsert = new Node(key);
@@ -482,25 +502,17 @@ bool AvlTree::isBalanced() {
 
 /* Returns true if binary tree with root as root is height-balanced */
 bool AvlTree::isBalanced(AvlTree::Node *root) {
-    int lh;
-    int rh;
 
-    if (root == NULL)
-        return 1;
+    if (root == nullptr)
+        return true;
 
-    lh = height(root->left);
-    rh = height(root->right);
-
-    if (abs(lh - rh) <= 1 &&
-        isBalanced(root->left) &&
-        isBalanced(root->right))
-        return 1;
-
-    return 0;
+    int lh = height(root->left);
+    int rh = height(root->right);
+    return abs(lh - rh) <= 1 && isBalanced(root->left) && isBalanced(root->right);
 }
 
 int AvlTree::height(AvlTree::Node *node) {
-    if (node == NULL)
+    if (node == nullptr)
         return 0;
 
     return 1 + max(height(node->left), height(node->right));
