@@ -49,11 +49,9 @@ bool AvlTree::search(int const key) const {
 
 }
 
-/**
- *
- * @param key the key of the node to remove.
- * @return
- */
+///
+/// \param key
+/// \return
 bool AvlTree::remove(int const key) {
 
     if (root == nullptr)
