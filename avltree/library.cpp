@@ -49,11 +49,9 @@ bool AvlTree::search(int const key) const {
 
 }
 
-/**
- *
- * @param key the key of the node to remove.
- * @return
- */
+///
+/// \param key
+/// \return
 bool AvlTree::remove(int const key) {
 
     if (root == nullptr)
@@ -423,7 +421,7 @@ AvlTree::Node *AvlTree::rotateRight(AvlTree::Node *input) {
 AvlTree::Node *AvlTree::rotateLeftRight(AvlTree::Node *input) {
     Node *tmp = input->left->right;
     bool leftSmaller = true;
-    if (tmp->balance = -1) {
+    if (tmp->balance == -1) {
         leftSmaller = false;
     }
     rotateLeft(input->left);
@@ -440,7 +438,7 @@ AvlTree::Node *AvlTree::rotateLeftRight(AvlTree::Node *input) {
 AvlTree::Node *AvlTree::rotateRightLeft(AvlTree::Node *input) {
     Node *tmp = input->right->left;
     bool leftSmaller = true;
-    if (tmp->balance = -1) {
+    if (tmp->balance == -1) {
         leftSmaller = false;
     }
     rotateRight(input->right);
