@@ -85,7 +85,7 @@ TEST(AvlTreeTest, Remove_Node_1Childs){
 }
 
 
-//fails 21,6,18,1,14,15,9,3,7,1,16,0
+//fails 21,6,18,1,14,15,9,3,7,1,16,0 --> fixed
 TEST(AvlTreeTest, isFailing){
     AvlTree tree;
     for (int i = 21; i > 0; i--) {
@@ -156,28 +156,21 @@ TEST(AvlTreeTest, isFailing){
 
 TEST(AvlTreeTest, Remove_Multible) {
     int random_integer;
-    for (int i = 10; i <= 1562; i++) {
+    for (int i = 10; i <= 10000; i++) {
         AvlTree tree;
         for (int j = i; j > 0; j--) {
             tree.insert(j);
         }
         cout << "Tree with " << i << " Nodes" << endl;
         bool test = false;
-        //srand(time(nullptr));
+        srand(time(nullptr));
         for (int k = i/2; k>0; k--){
             random_integer = rand()%i + 1;
-            if(test) {
-                cout << "int to delete:" << random_integer << " ,";
-                cout << tree;
-            }
             tree.remove(random_integer);
-            //cout << "Remove Node no. : "<< random_integer << endl;
-            if(random_integer == 1069 && i == 1561) {
-                test = true;
-            }
+
         }
 
-        cout << "Balanced ? : " << tree.isBalanced() << endl;
+        //cout << "Balanced ? : " << tree.isBalanced() << endl;
         //cout << tree;
         EXPECT_TRUE(tree.isBalanced());
     };

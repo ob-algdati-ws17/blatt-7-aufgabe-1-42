@@ -248,9 +248,17 @@ void AvlTree::upout(AvlTree::Node *input) {
                     root->left->left->balance = 0;
                     upout(root);
                 } else {
+                    int balanceRightLeft = input->previous->right->left->balance;
                     Node *root = rotateRightLeft(input->previous);
                     root->balance = 0;
                     root->left->left->balance = 0;
+                    root->left->balance = 0;
+                    root->right->balance = 0;
+                    if(balanceRightLeft == 1) {
+                        root->left->balance = -1;
+                    } else if (balanceRightLeft == -1) {
+                        root->right->balance = 1;
+                    }
                     upout(root);
                 }
             }
@@ -275,9 +283,17 @@ void AvlTree::upout(AvlTree::Node *input) {
                     root->right->right->balance = 0;
                     upout(root);
                 } else {
+
+                    int balanceLeftRight = input->previous->left->right->balance;
                     Node *root = rotateLeftRight(input->previous);
                     root->balance = 0;
-                    root->right->right->balance = 0;
+                    root->right->right->balance = 0;root->left->balance = 0;
+                    root->right->balance = 0;
+                    if(balanceLeftRight == 1) {
+                        root->left->balance = -1;
+                    } else if (balanceLeftRight == -1) {
+                        root->right->balance = 1;
+                    }
                     upout(root);
                 }
             }
@@ -423,7 +439,7 @@ AvlTree::Node *AvlTree::rotateRight(AvlTree::Node *input) {
 AvlTree::Node *AvlTree::rotateLeftRight(AvlTree::Node *input) {
     Node *tmp = input->left->right;
     bool leftSmaller = true;
-    if (tmp->balance = -1) {
+    if (tmp->balance == -1) {
         leftSmaller = false;
     }
     rotateLeft(input->left);
@@ -440,7 +456,7 @@ AvlTree::Node *AvlTree::rotateLeftRight(AvlTree::Node *input) {
 AvlTree::Node *AvlTree::rotateRightLeft(AvlTree::Node *input) {
     Node *tmp = input->right->left;
     bool leftSmaller = true;
-    if (tmp->balance = -1) {
+    if (tmp->balance == -1) {
         leftSmaller = false;
     }
     rotateRight(input->right);
