@@ -32,55 +32,61 @@ TEST(AvlTreeTest, Search_Exists) {
 
 }
 
-TEST(AvlTreeTest, Insert_LeftRotateForce){
+TEST(AvlTreeTest, Insert_LeftRotateForce) {
     AvlTree tree;
     for (int i = 1; i <= 30; i++) {
         tree.insert(i);
     }
-    cout << tree;
     EXPECT_TRUE(tree.isBalanced());
 }
 
 
-TEST(AvlTreeTest, Insert_RightRotateForce){
+TEST(AvlTreeTest, Insert_RightRotateForce) {
     AvlTree tree;
     for (int i = 30; i > 0; i--) {
         tree.insert(i);
     }
-    cout << tree;
     EXPECT_TRUE(tree.isBalanced());
 }
 
-TEST(AvlTreeTest, Remove_Root){
+TEST(AvlTreeTest, Remove_Root) {
     AvlTree tree;
     for (int i = 30; i > 0; i--) {
         tree.insert(i);
     }
-    cout << tree;
     tree.remove(15);
-    cout << tree;
     EXPECT_TRUE(tree.isBalanced());
 }
 
-TEST(AvlTreeTest, Remove_Node_2Childs){
+TEST(AvlTreeTest, Remove_Node_2Childs) {
     AvlTree tree;
     for (int i = 30; i > 0; i--) {
         tree.insert(i);
     }
-    cout << tree;
     tree.remove(11);
-    cout << tree;
     EXPECT_TRUE(tree.isBalanced());
 }
 
-TEST(AvlTreeTest, Remove_Node_1Childs){
+TEST(AvlTreeTest, Remove_Node_1Childs) {
     AvlTree tree;
     for (int i = 26; i > 0; i--) {
         tree.insert(i);
     }
-    cout << tree;
     tree.remove(2);
-    cout << tree;
     EXPECT_TRUE(tree.isBalanced());
 }
 
+
+TEST(AvlTreeTest, RemoveEmptyTree) {
+    AvlTree tree;
+    ASSERT_FALSE(tree.remove(0));
+}
+
+TEST(AvlTreeTest, RemoveItem0Childs) {
+    AvlTree tree;
+    tree.insert(1);
+    tree.insert(2);
+    tree.insert(3);
+    ASSERT_TRUE(tree.remove(2));
+    ASSERT_TRUE(tree.isBalanced());
+}
