@@ -324,7 +324,9 @@ bool AvlTree::insert(int const key) {
         element->left = toInsert;
         element->balance -= 1;
     }
-    upin(element);
+    if (element->balance != 0) {
+        upin(element);
+    }
 
     return true;
 }
@@ -386,7 +388,6 @@ AvlTree::Node *AvlTree::rotateLeft(AvlTree::Node *input) {
     }
     input->balance = 0;
     inputRight->balance = 0;
-
     return inputRight;
 };
 
@@ -428,9 +429,9 @@ AvlTree::Node *AvlTree::rotateLeftRight(AvlTree::Node *input) {
     }
     rotateLeft(input->left);
     Node *toReturn = rotateRight(input);
-    if (leftSmaller) {
+    if (leftSmaller && toReturn->left->childs() != 0) {
         toReturn->left->balance = -1;
-    } else {
+    } else if ( !leftSmaller && toReturn->right->childs() != 0){
         toReturn->right->balance = 1;
     }
     return toReturn;
@@ -445,9 +446,9 @@ AvlTree::Node *AvlTree::rotateRightLeft(AvlTree::Node *input) {
     }
     rotateRight(input->right);
     Node *toReturn = rotateLeft(input);
-    if (leftSmaller) {
+    if (leftSmaller && toReturn->left->childs() != 0) {
         toReturn->left->balance = -1;
-    } else {
+    } else if ( !leftSmaller && toReturn->right->childs() != 0){
         toReturn->right->balance = 1;
     }
     return toReturn;

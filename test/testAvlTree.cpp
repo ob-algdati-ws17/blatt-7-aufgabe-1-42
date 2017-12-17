@@ -85,88 +85,83 @@ TEST(AvlTreeTest, Remove_Node_1Childs){
 }
 
 
-//fails 21,6,18,1,14,15,9,3,7,1,16,0 --> fixed
+//fails 48, 93, 69, 101, 104, 70, 73, 85, 50, 112, 108, 71
 TEST(AvlTreeTest, isFailing){
     AvlTree tree;
-    for (int i = 21; i > 0; i--) {
-        tree.insert(i);
-    }
-
-    cout<<tree;
-    tree.remove(6);
-    cout<<tree;
+    tree += 48;
+    cout << tree;
+    ASSERT_TRUE(tree.isBalanced());
+    tree += 93;
+    cout << tree;
     ASSERT_TRUE(tree.isBalanced());
 
-    tree.remove(18);
-    cout<<tree;
+    tree += 69;
+    cout << tree;
     ASSERT_TRUE(tree.isBalanced());
 
-    tree.remove(4);
-    cout<<tree;
+    tree += 101;
+    cout << tree;
     ASSERT_TRUE(tree.isBalanced());
 
-    tree.remove(14);
-    cout<<tree;
+    tree += 104;
+    cout << tree;
     ASSERT_TRUE(tree.isBalanced());
 
-    tree.remove(15);
-    cout<<tree;
+    tree += 70;
+    cout << tree;
     ASSERT_TRUE(tree.isBalanced());
 
-    tree.remove(9);
-    cout<<tree;
+    tree += 73;
+    cout << tree;
     ASSERT_TRUE(tree.isBalanced());
 
-    tree.remove(3);
-    cout<<tree;
+    tree += 85;
+    cout << tree;
     ASSERT_TRUE(tree.isBalanced());
 
-    tree.remove(7);
-    cout<<tree;
+    tree += 50;
+    cout << tree;
     ASSERT_TRUE(tree.isBalanced());
 
-    tree.remove(1);
-    cout<<tree;
+    tree += 112;
+    cout << tree;
     ASSERT_TRUE(tree.isBalanced());
 
-    tree.remove(16);
-    cout<<tree;
+    tree += 108;
+    cout << tree;
     ASSERT_TRUE(tree.isBalanced());
 
-    tree.remove(15);
-    cout<<tree;
+    tree += 71;
+    cout << tree;
     ASSERT_TRUE(tree.isBalanced());
+}
 
-    tree.remove(12);
-    cout<<tree;
-    ASSERT_TRUE(tree.isBalanced());
 
-    tree.remove(2);
-    cout<<tree;
-    ASSERT_TRUE(tree.isBalanced());
-
-    tree.remove(2);
-    cout<<tree;
-    ASSERT_TRUE(tree.isBalanced());
-
-    tree.remove(5);
-    cout<<tree;
-    ASSERT_TRUE(tree.isBalanced());
+TEST(AvlTreeTest, Insert_Multible) {
+    int random_integer;
+    for (int i = 10; i <= 5000; i++) {
+        AvlTree tree;
+        for (int j = i; j > 0; j--) {
+            random_integer = rand()%(i*10) + 1;
+            tree.insert(random_integer);
+        }
+        cout << "Tree with " << i << " Nodes" << endl;
+        ASSERT_TRUE(tree.isBalanced());
+    };
 }
 
 TEST(AvlTreeTest, Remove_Multible) {
     int random_integer;
-    for (int i = 10; i <= 10000; i++) {
+    for (int i = 10; i <= 5000; i++) {
         AvlTree tree;
         for (int j = i; j > 0; j--) {
             tree.insert(j);
         }
         cout << "Tree with " << i << " Nodes" << endl;
-        for (int k = i/2; k>0; k--){
-            srand(time(nullptr));
-            random_integer = rand()%i + 1;
+        for (int k = i / 2; k > 0; k--) {
+            random_integer = rand() % i + 1;
             tree.remove(random_integer);
         }
-        EXPECT_TRUE(tree.isBalanced());
+        ASSERT_TRUE(tree.isBalanced());
     };
 }
