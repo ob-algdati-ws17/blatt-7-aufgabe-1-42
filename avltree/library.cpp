@@ -2,11 +2,14 @@
 
 #include <iostream>
 #include <iomanip>
-
+/// \param val the value of this node.
 AvlTree::Node::Node(int const val) : key(val) {
 
 }
 
+/// \param val the value of the node.
+/// \param left the left child node.
+/// \param right the right child node.
 AvlTree::Node::Node(int const val, Node *left, Node *right) : key(val), left(left), right(right) {
 
 }
@@ -20,8 +23,6 @@ AvlTree::Node::~Node() {
     }
 }
 
-/// Counts the amount of childrens attached to this node.
-/// \return the amount of children {0,1,2}
 int AvlTree::Node::childs() const {
     if (left == nullptr && right == nullptr)
         return 0;
@@ -30,25 +31,20 @@ int AvlTree::Node::childs() const {
     return 2;
 }
 
-/// Gets the left or right child of the node.
 /// \param child the type of child should be fetched.
-/// \return the child node. (May be nullptr!)
 AvlTree::Node *AvlTree::Node::getChild(Child child) const {
     if (child == Child::left)
         return this->left;
     return this->right;
 }
 
-/// Deconstructs the avl tree
 AvlTree::~AvlTree() {
     if (root != nullptr) {
         delete root;
     }
 }
 
-/// Searches a node in the avl tree.
 /// \param key the key of the node to find.
-/// \return true if the node is found, otherwise false.
 bool AvlTree::search(int const key) const {
     Node *element = root;
 
@@ -64,9 +60,7 @@ bool AvlTree::search(int const key) const {
 
 }
 
-/// Removes a node from the tree.
 /// \param key the node to remove.
-/// \return true if the node was found and deleted, otherwise false.
 bool AvlTree::remove(int const key) {
 
     if (root == nullptr)
@@ -114,7 +108,6 @@ bool AvlTree::remove(int const key) {
 
 }
 
-/// Delete a given node without an child element (only two leaf)
 /// \param element the element to delete.
 void AvlTree::deleteWithoutChild(AvlTree::Node *element) {
     if (element->previous) {
@@ -171,7 +164,6 @@ void AvlTree::deleteWithoutChild(AvlTree::Node *element) {
     delete element;
 }
 
-/// Fixes the balances of the (new) parents after deleting a node without childs.
 /// \param rotatedRoot the new root of the "subtree"
 void AvlTree::fixBalancesDelete(AvlTree::Node *rotatedRoot) {//calc balance of right
     //calc balance of left child
@@ -188,7 +180,6 @@ void AvlTree::fixBalancesDelete(AvlTree::Node *rotatedRoot) {//calc balance of r
     }
 }
 
-/// Fixes the balances of a child node.
 /// \param rotatedRoot the root to fetch the child.
 /// \param child the child to fix (left or right)
 void AvlTree::fixBalancesChild(const AvlTree::Node *rotatedRoot, Child child) const {
@@ -203,7 +194,6 @@ void AvlTree::fixBalancesChild(const AvlTree::Node *rotatedRoot, Child child) co
     }
 }
 
-/// Delete an node with excatly one child.
 /// \param element the node to delete.
 void AvlTree::deleteWithOneChild(AvlTree::Node *element) {
     Node *child = element->left ? element->left : element->right;
@@ -217,7 +207,6 @@ void AvlTree::deleteWithOneChild(AvlTree::Node *element) {
     delete child;
 }
 
-/// The upout logic after removing a node.
 /// \param input the parent node of the removed node.
 void AvlTree::upout(AvlTree::Node *input) {
     if (input->previous) {
@@ -300,9 +289,7 @@ void AvlTree::upout(AvlTree::Node *input) {
 
 }
 
-/// Inserts a new key in the tree.
 /// \param key the key to insert.
-/// \return true if the key was inserted, false if not (mostly because it already exists)
 bool AvlTree::insert(int const key) {
 
     Node *toInsert = new Node(key);
@@ -342,7 +329,7 @@ bool AvlTree::insert(int const key) {
     return true;
 }
 
-
+/// \param input the root which was modified by adding and rotating a node..
 void AvlTree::upin(AvlTree::Node *input) {
     if (input != nullptr && input->previous != nullptr) {
         Node *previous = input->previous;
@@ -374,7 +361,7 @@ void AvlTree::upin(AvlTree::Node *input) {
     }
 }
 
-//input old root get new root
+/// \param input the old root of the (sub)tree which shal be used for rotating.
 AvlTree::Node *AvlTree::rotateLeft(AvlTree::Node *input) {
     Node *inputRightLeft = input->right->left;
     Node *inputPrevious = input->previous;
@@ -403,7 +390,7 @@ AvlTree::Node *AvlTree::rotateLeft(AvlTree::Node *input) {
     return inputRight;
 };
 
-//input old root get new root
+/// \param input the old root of the (sub)tree which shal be used for rotating.
 AvlTree::Node *AvlTree::rotateRight(AvlTree::Node *input) {
     Node *inputLeftRight = input->left->right;
     Node *inputPrevious = input->previous;
@@ -432,7 +419,7 @@ AvlTree::Node *AvlTree::rotateRight(AvlTree::Node *input) {
     return inputLeft;
 };
 
-//input old root get new root
+/// \param input the old root of the (sub)tree which shal be used for rotating.
 AvlTree::Node *AvlTree::rotateLeftRight(AvlTree::Node *input) {
     Node *tmp = input->left->right;
     bool leftSmaller = true;
@@ -449,7 +436,7 @@ AvlTree::Node *AvlTree::rotateLeftRight(AvlTree::Node *input) {
     return toReturn;
 };
 
-//input old root get new root
+/// \param input the old root of the (sub)tree which shal be used for rotating.
 AvlTree::Node *AvlTree::rotateRightLeft(AvlTree::Node *input) {
     Node *tmp = input->right->left;
     bool leftSmaller = true;
