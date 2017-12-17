@@ -87,6 +87,32 @@ TEST(AvlTreeTest, RemoveItem0Childs) {
     tree.insert(1);
     tree.insert(2);
     tree.insert(3);
-    ASSERT_TRUE(tree.remove(2));
+    ASSERT_TRUE(tree.remove(3));
     ASSERT_TRUE(tree.isBalanced());
+}
+
+TEST(AvlTreeTest, RemoveItemNotExist){
+    AvlTree tree;
+    tree.insert(1);
+    ASSERT_FALSE(tree.remove(0));
+}
+
+TEST(AvlTreeTest, OperatorOutput){
+    AvlTree tree;
+    tree.insert(0);
+    cout << tree;
+}
+
+
+TEST(AvlTreeTest, OperatorRemove){
+    AvlTree tree;
+    tree += 2;
+    tree -= 2;
+    ASSERT_FALSE(tree.search(2));
+}
+
+TEST(AvlTreeTest, OperatorAdd){
+    AvlTree tree;
+    tree += 2;
+    ASSERT_TRUE(tree.search(2));
 }
