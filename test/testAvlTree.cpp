@@ -128,5 +128,19 @@ TEST(AvlTreeTest, RotateRightLeft){
     tree += 35;
     tree += 45;
     tree += 34;
-    cout<<tree;
+    ASSERT_TRUE(tree.isBalanced());
+}
+
+TEST(AvlTreeTest, RotateLeftRight){
+    AvlTree tree;
+    tree+=20;
+    tree+=10;
+    tree+=30;
+    tree+=15;
+    tree+=5;
+    tree+=40;
+    tree+=2;
+    tree+=7;
+    tree+=9;
+    ASSERT_TRUE(tree.isBalanced());
 }
