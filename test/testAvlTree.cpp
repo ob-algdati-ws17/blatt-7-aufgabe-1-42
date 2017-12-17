@@ -116,3 +116,17 @@ TEST(AvlTreeTest, OperatorAdd){
     tree += 2;
     ASSERT_TRUE(tree.search(2));
 }
+
+TEST(AvlTreeTest, RotateRightLeft){
+    AvlTree tree;
+    tree += 20;
+    tree += 10;
+    tree += 30;
+    tree += 5;
+    tree += 25;
+    tree += 40;
+    tree += 35;
+    tree += 45;
+    tree += 34;
+    cout<<tree;
+}
