@@ -12,7 +12,12 @@ addons:
       - doxygen-latex
       - doxygen-gui
       - graphviz
-    
+    sources:
+      - ubuntu-toolchain-r-test
+
+before_install:
+  - pip install --user cpp-coveralls
+  
 before_script:  
     - mkdir build
     - cd build
@@ -21,11 +26,7 @@ before_script:
 script: 
     - make
     - test/testAvlTree
- 
-deploy:
-  local_dir: doc_doxygen/html
-  provider: pages
-  skip_cleanup: true
-  github_token: $GITHUB_TOKEN # Set in travis-ci.org dashboard
-  on:
-    branch: master
+    
+after_success:
+  - coveralls --root .. -E ".*googletest-src.*" -E ".*gtest.*" -E ".*external.*" -E ".*CMakeFiles.*" -E ".*test/.*.cpp.*"
+  

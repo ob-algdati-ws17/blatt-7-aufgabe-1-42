@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.2)
 project(Avltree)
 
 set(CMAKE_CXX_STANDARD 11)
-
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
 add_subdirectory(avltree)
 
 add_library(Main ${SOURCE_FILES})
