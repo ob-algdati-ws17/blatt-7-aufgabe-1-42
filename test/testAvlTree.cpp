@@ -228,6 +228,28 @@ TEST(AvlTreeTest, Remove_RightLeftNoOtherChild){
     ASSERT_TRUE(tree.isBalanced());
 }
 
+TEST(AvlTreeTest, Remove_RightLeaf){
+
+    AvlTree tree;
+    tree += 20;
+    tree += 10;
+    tree += 5;
+    tree += 15;
+    tree -= 15;
+    ASSERT_TRUE(tree.isBalanced());
+}
+
+TEST(AvlTreeTest, Remove_LeftLeaf){
+
+    AvlTree tree;
+    tree += 20;
+    tree += 10;
+    tree += 5;
+    tree += 15;
+    tree -= 5;
+    ASSERT_TRUE(tree.isBalanced());
+}
+
 TEST(AvlTreeTest, Remove_RightLeft){
 
     AvlTree tree;
