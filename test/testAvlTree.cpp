@@ -91,33 +91,48 @@ TEST(AvlTreeTest, RemoveItem0Childs) {
     ASSERT_TRUE(tree.isBalanced());
 }
 
-TEST(AvlTreeTest, RemoveItemNotExist){
+TEST(AvlTreeTest, RemoveItemNotExist) {
     AvlTree tree;
     tree.insert(1);
     ASSERT_FALSE(tree.remove(0));
 }
 
-TEST(AvlTreeTest, OperatorOutput){
+TEST(AvlTreeTest, OperatorOutput) {
     AvlTree tree;
     tree.insert(0);
     cout << tree;
 }
 
 
-TEST(AvlTreeTest, OperatorRemove){
+TEST(AvlTreeTest, OperatorRemove) {
     AvlTree tree;
     tree += 2;
     tree -= 2;
     ASSERT_FALSE(tree.search(2));
 }
 
-TEST(AvlTreeTest, OperatorAdd){
+TEST(AvlTreeTest, OperatorAdd) {
     AvlTree tree;
     tree += 2;
     ASSERT_TRUE(tree.search(2));
 }
 
-TEST(AvlTreeTest, RotateRightLeft){
+
+TEST(AvlTreeTest, RemoveRotateRightInner) {
+    AvlTree tree;
+    tree += 20;
+    tree += 10;
+    tree += 30;
+    tree += 5;
+    tree += 25;
+    tree += 40;
+    tree += 35;
+    tree += 45;
+    tree -= 25;
+    ASSERT_TRUE(tree.isBalanced());
+}
+
+TEST(AvlTreeTest, Insert_RotateRightLeft) {
     AvlTree tree;
     tree += 20;
     tree += 10;
@@ -131,16 +146,31 @@ TEST(AvlTreeTest, RotateRightLeft){
     ASSERT_TRUE(tree.isBalanced());
 }
 
-TEST(AvlTreeTest, RotateLeftRight){
+
+TEST(AvlTreeTest, Remove_RotateLeftRight) {
     AvlTree tree;
-    tree+=20;
-    tree+=10;
-    tree+=30;
-    tree+=15;
-    tree+=5;
-    tree+=40;
-    tree+=2;
-    tree+=7;
-    tree+=9;
+    tree += 20;
+    tree += 10;
+    tree += 30;
+    tree += 15;
+    tree += 5;
+    tree += 40;
+    tree += 2;
+    tree += 7;
+    tree -= 15;
+    ASSERT_TRUE(tree.isBalanced());
+}
+
+TEST(AvlTreeTest, Insert_RotateLeftRight) {
+    AvlTree tree;
+    tree += 20;
+    tree += 10;
+    tree += 30;
+    tree += 15;
+    tree += 5;
+    tree += 40;
+    tree += 2;
+    tree += 7;
+    tree += 9;
     ASSERT_TRUE(tree.isBalanced());
 }
