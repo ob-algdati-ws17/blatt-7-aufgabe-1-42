@@ -192,10 +192,11 @@ TEST(AvlTreeTest, Insert_RotateLeftRight) {
     ASSERT_TRUE(tree.isBalanced());
 }
 
-TEST(AvlTreeTest, Remove_RightLeft){
+TEST(AvlTreeTest, Remove_LeftRight){
 
     AvlTree tree;
     tree += 20;
+    tree += 25;
     tree += 10;
     tree += 5;
     tree += 15;
@@ -203,14 +204,41 @@ TEST(AvlTreeTest, Remove_RightLeft){
     ASSERT_TRUE(tree.isBalanced());
 }
 
-TEST(AvlTreeTest, Remove_LeftRight){
+TEST(AvlTreeTest, Remove_LeftRightNoOtherChild){
+
+    AvlTree tree;
+   tree += 20;
+    tree += 25;
+    tree += 10;
+    tree += 15;
+    tree -= 15;
+    ASSERT_TRUE(tree.isBalanced());
+}
+
+TEST(AvlTreeTest, Remove_RightLeftNoOtherChild){
 
     AvlTree tree;
     tree += 20;
     tree += 10;
+    tree += 25;
     tree += 5;
     tree += 15;
-    tree -= 5;
+    tree += 22;
+    tree -= 22;
+    ASSERT_TRUE(tree.isBalanced());
+}
+
+TEST(AvlTreeTest, Remove_RightLeft){
+
+    AvlTree tree;
+    tree += 20;
+    tree += 10;
+    tree += 25;
+    tree += 5;
+    tree += 15;
+    tree += 22;
+    tree += 23;
+    tree -= 22;
     ASSERT_TRUE(tree.isBalanced());
 }
 
