@@ -192,7 +192,7 @@ TEST(AvlTreeTest, Insert_RotateLeftRight) {
     ASSERT_TRUE(tree.isBalanced());
 }
 
-TEST(AvlTreeTest, Remove_LeftRight){
+TEST(AvlTreeTest, Remove_LeftRight) {
 
     AvlTree tree;
     tree += 20;
@@ -204,10 +204,10 @@ TEST(AvlTreeTest, Remove_LeftRight){
     ASSERT_TRUE(tree.isBalanced());
 }
 
-TEST(AvlTreeTest, Remove_LeftRightNoOtherChild){
+TEST(AvlTreeTest, Remove_LeftRightNoOtherChild) {
 
     AvlTree tree;
-   tree += 20;
+    tree += 20;
     tree += 25;
     tree += 10;
     tree += 15;
@@ -215,7 +215,7 @@ TEST(AvlTreeTest, Remove_LeftRightNoOtherChild){
     ASSERT_TRUE(tree.isBalanced());
 }
 
-TEST(AvlTreeTest, Remove_RightLeftNoOtherChild){
+TEST(AvlTreeTest, Remove_RightLeftNoOtherChild) {
 
     AvlTree tree;
     tree += 20;
@@ -228,7 +228,7 @@ TEST(AvlTreeTest, Remove_RightLeftNoOtherChild){
     ASSERT_TRUE(tree.isBalanced());
 }
 
-TEST(AvlTreeTest, Remove_RightLeaf){
+TEST(AvlTreeTest, Remove_RightLeaf) {
 
     AvlTree tree;
     tree += 20;
@@ -239,7 +239,7 @@ TEST(AvlTreeTest, Remove_RightLeaf){
     ASSERT_TRUE(tree.isBalanced());
 }
 
-TEST(AvlTreeTest, Remove_LeftLeaf){
+TEST(AvlTreeTest, Remove_LeftLeaf) {
 
     AvlTree tree;
     tree += 20;
@@ -250,7 +250,7 @@ TEST(AvlTreeTest, Remove_LeftLeaf){
     ASSERT_TRUE(tree.isBalanced());
 }
 
-TEST(AvlTreeTest, Remove_RightLeft){
+TEST(AvlTreeTest, Remove_RightLeft) {
 
     AvlTree tree;
     tree += 20;
@@ -264,3 +264,31 @@ TEST(AvlTreeTest, Remove_RightLeft){
     ASSERT_TRUE(tree.isBalanced());
 }
 
+TEST(AvlTreeTest, Rem) {
+    AvlTree tree;
+    for (int i = 20; i > 0; i--) {
+        tree.insert(i);
+    }
+    tree -= 6;
+    tree -= 18;
+    tree -= 4;
+    tree -= 1;
+    tree -= 20;
+    tree -= 12;
+    tree -= 9;
+    tree -= 6;
+    tree -= 2;
+    ASSERT_TRUE(tree.isBalanced());
+}
+
+TEST(AvlTreeTest, Rem2){
+    AvlTree tree;
+    for (int i = 10; i > 0; i--) {
+        tree.insert(i);
+    }
+    tree -= 4;
+    tree -= 2;
+    tree -= 10;
+    tree -= 9;
+    ASSERT_TRUE(tree.isBalanced());
+}
