@@ -291,4 +291,5 @@ TEST(AvlTreeTest, Rem2){
     tree -= 10;
     tree -= 9;
     ASSERT_TRUE(tree.isBalanced());
+
 }
